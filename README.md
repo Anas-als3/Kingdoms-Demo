@@ -1,6 +1,6 @@
 # الممالك (Kingdom) — Demo
 
-> A gamified, Arabic-first self-improvement platform: join **9 kingdoms**, take on **AI-generated challenges**, **prove** them through real verification, climb **leaderboards**, earn **badges**, and **compete in lobbies**.
+> **تجربة تطوير ذات قائمة على التلعيب (Gamification)** — a fully **gamified**, Arabic-first self-improvement platform: join **9 kingdoms**, take on **AI-generated challenges**, **prove** them through real verification, climb **leaderboards**, earn **badges**, and **compete in lobbies**.
 
 **🌐 Live API:** http://kingdom-env.eba-qz67sy59.eu-central-1.elasticbeanstalk.com  
 **📖 API documentation:** [Postman published docs](https://documenter.getpostman.com/view/52784213/2sBXwwn7pE)  
@@ -8,9 +8,9 @@
 
 ## Overview
 
-**الممالك (Kingdom)** منصّة عربية لتطوير الذات بأسلوب الألعاب. ينضمّ اللاعب إلى **ممالك** متنوّعة (الرياضة، العطاء، التطوع، القراءة، الألعاب، الإسلاميات، المعرفة، التغذية، البرمجة)، ويخوض **تحدّيات يولّدها الذكاء الاصطناعي**، وعليه أن **يُثبت** إكمال كل تحدٍّ عبر تحقّق حقيقي — أنشطة Strava، أو تبرّعات بنكية عبر المصرفية المفتوحة (Neotek)، أو شهادات تطوّع يراجعها الذكاء الاصطناعي، أو اختبارات على واتساب، أو تحليل صور الوجبات، أو وقت اللعب والإنجازات على Steam، أو مساهمات GitHub. التحدّيات المُثبَتة تمنح **نقاط خبرة (XP)** ترفع **درجة اللاعب** (من D3 إلى D1) وتُكسبه **أوسمة**؛ كما **يتنافس اللاعبون في لوبيات** (يفتح اشتراك Premium عبر LemonSqueezy إنشاءها).
+**الممالك (Kingdom)** منصّة عربية تقوم على **التلعيب (Gamification)** لتطوير الذات بأسلوب الألعاب. ينضمّ اللاعب إلى **ممالك** متنوّعة (الرياضة، العطاء، التطوع، القراءة، الألعاب، الإسلاميات، المعرفة، التغذية، البرمجة)، ويخوض **تحدّيات يولّدها الذكاء الاصطناعي**، وعليه أن **يُثبت** إكمال كل تحدٍّ عبر تحقّق حقيقي — أنشطة Strava، أو تبرّعات بنكية عبر المصرفية المفتوحة (Neotek)، أو شهادات تطوّع يراجعها الذكاء الاصطناعي، أو اختبارات على واتساب، أو تحليل صور الوجبات، أو وقت اللعب والإنجازات على Steam، أو مساهمات GitHub. التحدّيات المُثبَتة تمنح **نقاط خبرة (XP)** ترفع **درجة اللاعب** (من D3 إلى D1) وتُكسبه **أوسمة**؛ كما **يتنافس اللاعبون في لوبيات** (يفتح اشتراك Premium عبر LemonSqueezy إنشاءها).
 
-**الممالك (Kingdom)** is an Arabic-first, gamified self-improvement platform. A player joins different **kingdoms** (Fitness, Charity, Volunteering, Reading, Gaming, Faith, Knowledge, Nutrition, Programming) and takes on **AI-generated challenges**, then has to **prove** each one through real verification — Strava activities, bank donations over Open Banking (Neotek), volunteer certificates reviewed by AI, WhatsApp quizzes, meal-photo analysis, Steam playtime & achievements, or GitHub contributions. Verified challenges grant **XP** that raises the player's **division** (D3 → D1) and earns **badges**; players also **compete in lobbies** (a Premium subscription via LemonSqueezy unlocks creating them).
+**الممالك (Kingdom)** is an Arabic-first, **gamified (gamification)** self-improvement platform. A player joins different **kingdoms** (Fitness, Charity, Volunteering, Reading, Gaming, Faith, Knowledge, Nutrition, Programming) and takes on **AI-generated challenges**, then has to **prove** each one through real verification — Strava activities, bank donations over Open Banking (Neotek), volunteer certificates reviewed by AI, WhatsApp quizzes, meal-photo analysis, Steam playtime & achievements, or GitHub contributions. Verified challenges grant **XP** that raises the player's **division** (D3 → D1) and earns **badges**; players also **compete in lobbies** (a Premium subscription via LemonSqueezy unlocks creating them).
 
 ## The 9 Kingdoms
 
