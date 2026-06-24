@@ -153,7 +153,7 @@ mvn spring-boot:run
 
 ## Team
 
-Graduation project by **Anas**, **Shahad**, and **Maysun**.
+Project By **Anas**, **Shahad**, and **Maysun**.
 - **Anas** — challenges, the verification engines, registration, lobby resolution (Fitness / Charity / Volunteering).
 - **Shahad** — kingdoms, membership, leaderboards, profile, badges, challenge-question quizzes (Reading / Gaming / Faith).
 - **Maysun** — lobbies, premium & payments, the admin panel, n8n automation (Knowledge / Nutrition / Programming).
