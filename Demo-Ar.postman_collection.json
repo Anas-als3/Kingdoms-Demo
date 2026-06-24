@@ -1,0 +1,1486 @@
+{
+  "info": {
+    "name": "Kingdom — Demo (Ar)",
+    "description": "مسار العرض الكامل بالعربية. الدخول بلاعب مُسجَّل مسبقاً (player2/demo1234 = عبدالله) — التسجيل متخطّى. لكل مملكة: انضم ← صادِق إن لزم ← تصفّح ← انضم للتحدّي ← أنهِ. ثم اللوبي (صورة AI) ثم الملف/الأوسمة/الصدارة. baseUrl الافتراضي محلي.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{playerUser}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{playerPass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "playerUser",
+      "value": "player2"
+    },
+    {
+      "key": "playerPass",
+      "value": "demo1234"
+    },
+    {
+      "key": "challengeId",
+      "value": ""
+    },
+    {
+      "key": "progressId",
+      "value": ""
+    },
+    {
+      "key": "membershipId",
+      "value": ""
+    },
+    {
+      "key": "lobbyChallengeId",
+      "value": ""
+    },
+    {
+      "key": "lobbyId",
+      "value": ""
+    },
+    {
+      "key": "lobbyProgressId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "٠ — الدخول (لاعب مُسجَّل مسبقاً)",
+      "item": [
+        {
+          "name": "ملفّي — تأكيد الدخول كـ عبدالله",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/player/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "player",
+                "me"
+              ]
+            },
+            "description": "بدون تسجيل: الدخول بحساب لاعب مُسجَّل مُسبقاً  player2 / demo1234 = عبدالله (Premium). كل الطلبات تعمل بهذا الدخول إلا ما حُدّد غير ذلك."
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة الرياضة",
+      "item": [
+        {
+          "name": "انضم لـ مملكة الرياضة",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "1"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تفويض سترافا (المصادقة المطلوبة)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/verify/fitness/connect",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify",
+                "fitness",
+                "connect"
+              ]
+            },
+            "description": "يرجع authorizeUrl — افتحه في المتصفح ووافق على Strava، ثم أنهِ التحدّي."
+          }
+        },
+        {
+          "name": "تصفّح تحديات الرياضة",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "1"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ التحدّي (تحقّق)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/finish/{{progressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "finish",
+                "{{progressId}}"
+              ]
+            },
+            "description": "يتحقق من نشاطك الحقيقي ويمنح XP عند تحقّق الهدف."
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة العطاء",
+      "item": [
+        {
+          "name": "انضم لـ مملكة العطاء",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "2"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "ربط البنك عبر Neotek (المصادقة المطلوبة)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/verify/charity/link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify",
+                "charity",
+                "link"
+              ]
+            },
+            "description": "يرجع رابط موافقة البنك (المصرفية المفتوحة)."
+          }
+        },
+        {
+          "name": "محاكاة تبرّع (مساعد للعرض)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/verify/charity/donate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify",
+                "charity",
+                "donate"
+              ]
+            },
+            "description": "يسجّل تبرّعاً تجريبياً ليمرّ التحقق."
+          }
+        },
+        {
+          "name": "تصفّح تحديات العطاء",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "2"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "مملكة التطوع",
+      "item": [
+        {
+          "name": "انضم لـ مملكة التطوع",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "3"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات التطوع",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "3"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ بإرسال شهادة التطوّع (PDF)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/verify/volunteer/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify",
+                "volunteer",
+                "upload"
+              ]
+            },
+            "description": "أرفق ملف PDF لشهادة التطوّع؛ يفحصها الذكاء الاصطناعي ويمنح XP عند القبول.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "progressId",
+                  "value": "{{progressId}}",
+                  "type": "text"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة القراءة",
+      "item": [
+        {
+          "name": "انضم لـ مملكة القراءة",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "4"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات القراءة",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "4"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ عبر اختبار واتساب",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/player/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "player",
+                "active"
+              ]
+            },
+            "description": "تحدّيات هذه المملكة تُحَل باختبار قصير على واتساب: بعد الانضمام تصلك الأسئلة على واتساب، أجِب عليها هناك ليُحتسب التحقّق. (هذا الطلب يعرض تحدّياتك النشطة.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة الألعاب",
+      "item": [
+        {
+          "name": "انضم لـ مملكة الألعاب",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "5"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "اربط حساب ستيم (المصادقة المطلوبة)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/connecte/link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connecte",
+                "link"
+              ]
+            },
+            "description": "اربط حسابك على ستيم لقياس وقت اللعب/الإنجازات.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"provider\": \"STEAM\", \"externalUserId\": \"<ضع Steam ID هنا>\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "تصفّح تحديات الألعاب",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "5"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ التحدّي (تحقّق)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/finish/{{progressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "finish",
+                "{{progressId}}"
+              ]
+            },
+            "description": "يتحقق من نشاطك الحقيقي ويمنح XP عند تحقّق الهدف."
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة الإسلاميات",
+      "item": [
+        {
+          "name": "انضم لـ مملكة الإسلاميات",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/6",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "6"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات الإسلاميات",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/6",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "6"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ عبر اختبار واتساب",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/player/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "player",
+                "active"
+              ]
+            },
+            "description": "تحدّيات هذه المملكة تُحَل باختبار قصير على واتساب: بعد الانضمام تصلك الأسئلة على واتساب، أجِب عليها هناك ليُحتسب التحقّق. (هذا الطلب يعرض تحدّياتك النشطة.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة المعرفة",
+      "item": [
+        {
+          "name": "انضم لـ مملكة المعرفة",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/7",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "7"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات المعرفة",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/7",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "7"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ عبر اختبار واتساب",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/player/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "player",
+                "active"
+              ]
+            },
+            "description": "تحدّيات هذه المملكة تُحَل باختبار قصير على واتساب: بعد الانضمام تصلك الأسئلة على واتساب، أجِب عليها هناك ليُحتسب التحقّق. (هذا الطلب يعرض تحدّياتك النشطة.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة التغذية",
+      "item": [
+        {
+          "name": "انضم لـ مملكة التغذية",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "8"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات التغذية",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "8"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ بإرسال صورة الوجبة",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/submit-image/{{progressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "submit-image",
+                "{{progressId}}"
+              ]
+            },
+            "description": "أرفق صورة وجبة؛ يحلّلها الذكاء الاصطناعي ويمنح XP عند القبول.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "مملكة البرمجة",
+      "item": [
+        {
+          "name": "انضم لـ مملكة البرمجة",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/join/9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "join",
+                "9"
+              ]
+            },
+            "description": "الانضمام للمملكة. (عبدالله Premium فلا يوجد حدّ للممالك.)"
+          }
+        },
+        {
+          "name": "تصفّح تحديات البرمجة",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "9"
+              ]
+            },
+            "description": "يحفظ أول تحدٍّ في المتغيّر challengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('challengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "انضم للتحدّي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "يحفظ progressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('progressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "احضر معرّف عضويتي",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom-membership/9/membership-id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom-membership",
+                "9",
+                "membership-id"
+              ]
+            },
+            "description": "يحفظ membershipId المطلوب للإرسال."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "var v=(j&&j.message!=null)?j.message:j; if(v!=null)pm.collectionVariables.set('membershipId',v);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ بإرسال مستودع GitHub",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/submit-github/{{membershipId}}/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "submit-github",
+                "{{membershipId}}",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "أرسل رابط مستودعك على GitHub؛ يُتحقق من مساهماتك.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"repoUrl\": \"https://github.com/<user>/<repo>\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "لوبي — تحدي صورة بالذكاء الاصطناعي (الأسهل)",
+      "item": [
+        {
+          "name": "احضر تحدي التغذية (لتحدي اللوبي)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge/kingdom/8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge",
+                "kingdom",
+                "8"
+              ]
+            },
+            "description": "يحفظ lobbyChallengeId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var a; try{a=pm.response.json()}catch(e){a=[]}",
+                  "if(Array.isArray(a)&&a.length&&a[0].id!=null)pm.collectionVariables.set('lobbyChallengeId',a[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنشئ لوبي (عبدالله — Premium)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lobby/create/8/{{lobbyChallengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lobby",
+                "create",
+                "8",
+                "{{lobbyChallengeId}}"
+              ]
+            },
+            "description": "إنشاء لوبي تنافسي على تحدي صورة وجبة. يحفظ lobbyId.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"لوبي الأكل الصحي\", \"description\": \"نتنافس على أفضل وجبة صحية\", \"visibility\": \"PUBLIC\", \"startsAt\": \"2026-07-01T10:00:00\", \"endsAt\": \"2026-07-08T10:00:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.lobbyId!=null)pm.collectionVariables.set('lobbyId',j.lobbyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "لاعب آخر ينضم (سارة)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/lobby-member/join/{{lobbyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lobby-member",
+                "join",
+                "{{lobbyId}}"
+              ]
+            },
+            "description": "لاعب ثاني في مملكة التغذية ينضم ليصبح هناك منافسة.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "player4",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "demo1234",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "أعضاء اللوبي",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/lobby-member/members/{{lobbyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lobby-member",
+                "members",
+                "{{lobbyId}}"
+              ]
+            },
+            "description": "يعرض المتنافسين."
+          }
+        },
+        {
+          "name": "انضم لتحدي اللوبي",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/join/{{lobbyChallengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "join",
+                "{{lobbyChallengeId}}"
+              ]
+            },
+            "description": "يحفظ lobbyProgressId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j; try{j=pm.response.json()}catch(e){j={}}",
+                  "if(j&&j.progressId!=null)pm.collectionVariables.set('lobbyProgressId',j.progressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "أنهِ مهمة اللوبي (ارفع صورة) — يُحسم تلقائياً",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/challenge-progress/submit-image/{{lobbyProgressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "challenge-progress",
+                "submit-image",
+                "{{lobbyProgressId}}"
+              ]
+            },
+            "description": "بمجرد التحقق من الصورة يُحسم اللوبي فوراً (الأول الذي يُنهي يفوز)، ويصل كل لاعب رسالة واتساب: الفائز «🏆 مبروك! فزت» والبقية «انتهى اللوبي، الفائز ... حظ أوفر».",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "حسم اللوبي يدوياً (اختياري)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/lobby-challenge/resolve/{{lobbyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lobby-challenge",
+                "resolve",
+                "{{lobbyId}}"
+              ]
+            },
+            "description": "زر «احسم الآن» — يرجع الفائز أو «لا يوجد فائز بعد»."
+          }
+        }
+      ]
+    },
+    {
+      "name": "الملف الشخصي والأوسمة ولوحات الصدارة",
+      "item": [
+        {
+          "name": "ملفّي",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/player/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "player",
+                "me"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "ملخّصي",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/player/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "player",
+                "summary"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "أوسمتي",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/player-badge/player-badges",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "player-badge",
+                "player-badges"
+              ]
+            },
+            "description": "الأوسمة التي كسبتها (مثل «أول تحدٍّ مكتمل»)."
+          }
+        },
+        {
+          "name": "لوحة الصدارة بالدرجة (التغذية، D3)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom/8/leaderboard/division/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom",
+                "8",
+                "leaderboard",
+                "division",
+                "3"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "لوحة الصدارة بالوقت (التغذية، أسبوعي)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kingdom/8/leaderboard/period/WEEKLY",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kingdom",
+                "8",
+                "leaderboard",
+                "period",
+                "WEEKLY"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    }
+  ]
+}
